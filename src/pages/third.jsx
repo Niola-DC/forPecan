@@ -237,7 +237,7 @@ const formatStatus = (status) => {
                         <div className="text-sm text-gray-600">Approved</div>
                     </div>
                     <div className="bg-white p-6 rounded-lg shadow">
-                        <div className="text-2xl font-bold text-blue-600">{applicants.length}</div>
+                        <div className="text-2xl font-bold text-purple-600">{applicants.length}</div>
                         <div className="text-sm text-gray-600">Currently Displayed</div>
                     </div>
                 </div>
@@ -248,7 +248,7 @@ const formatStatus = (status) => {
                         <h2 className="text-xl font-semibold text-gray-900">Creditworthy Applicants</h2>
                         <button
                             onClick={() => fetchApplicants(API_URL)}
-                            className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+                            className="text-purple-600 hover:text-purple-700 text-sm font-medium"
                         >
                             Refresh
                         </button>
