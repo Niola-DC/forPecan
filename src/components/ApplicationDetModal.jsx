@@ -29,56 +29,129 @@ const ApplicantDetailsModal = ({ selectedApplicant, closeModal }) => {
     });
 
   // 🧾 PDF Download Function
-  const handleDownloadPDF = () => {
-    const doc = new jsPDF();
-    doc.text(`Applicant Details - ID #${id}`, 14, 15);
+  // const handleDownloadPDF = () => {
+  //   const doc = new jsPDF();
+  //   doc.text(`Applicant Details - ID #${id}`, 14, 15);
 
-    // General Info
+  //   // General Info
+  //   autoTable(doc, {
+  //     startY: 25,
+  //     head: [["Field", "Value"]],
+  //     body: [
+  //       ["SID", sid],
+  //       ["Amount Needed", formatCurrency(amount_needed)],
+  //       ["Tenor (months)", tenor_in_months],
+  //       ["Purpose", purpose],
+  //       ["Status", status],
+  //       ["Created At", formatDate(created_at)],
+  //     ],
+  //   });
+
+  //   // Credit Report
+  //   if (credit_report_data) {
+  //     autoTable(doc, {
+  //       startY: doc.lastAutoTable.finalY + 10,
+  //       head: [["Credit Report", "Value"]],
+  //       body: [
+  //         ["Total Debt", formatCurrency(credit_report_data.debt.total_debt)],
+  //         ["Credit Check", credit_report_data.debt.credit_check ? "Yes" : "No"],
+  //         [
+  //           "Debt by Institution",
+  //           credit_report_data.debt.debt_by_institution
+  //             .map((d) => `${d.institution}: ₦${d.amount_owed}`)
+  //             .join(", "),
+  //         ],
+  //       ],
+  //     });
+  //   }
+
+  //   // Employment Details
+  //   if (employment_details) {
+  //     autoTable(doc, {
+  //       startY: doc.lastAutoTable.finalY + 10,
+  //       head: [["Employment Detail", "Value"]],
+  //       body: Object.entries(employment_details).map(([key, value]) => [
+  //         key,
+  //         value ? value.toString() : "—",
+  //       ]),
+  //     });
+  //   }
+
+  //   doc.save(`applicant_${id}.pdf`);
+  // };
+
+  const handleDownloadPDF = () => {
+  const doc = new jsPDF();
+  doc.text(`Applicant Details - ID #${id}`, 14, 15);
+
+  // General Info
+  autoTable(doc, {
+    startY: 25,
+    head: [["Field", "Value"]],
+    body: [
+      ["SID", sid],
+      ["Amount Needed", formatCurrency(amount_needed)],
+      ["Tenor (months)", tenor_in_months],
+      ["Purpose", purpose],
+      ["Status", status],
+      ["Created At", formatDate(created_at)],
+    ],
+  });
+
+  // Credit Report
+  if (credit_report_data) {
     autoTable(doc, {
-      startY: 25,
-      head: [["Field", "Value"]],
+      startY: doc.lastAutoTable.finalY + 10,
+      head: [["Credit Report", "Value"]],
       body: [
-        ["SID", sid],
-        ["Amount Needed", formatCurrency(amount_needed)],
-        ["Tenor (months)", tenor_in_months],
-        ["Purpose", purpose],
-        ["Status", status],
-        ["Created At", formatDate(created_at)],
+        ["Total Debt", formatCurrency(credit_report_data.debt.total_debt)],
+        ["Credit Check", credit_report_data.debt.credit_check ? "Yes" : "No"],
+        [
+          "Debt by Institution",
+          credit_report_data.debt.debt_by_institution
+            .map((d) => `${d.institution}: ₦${d.amount_owed}`)
+            .join(", "),
+        ],
       ],
     });
+  }
 
-    // Credit Report
-    if (credit_report_data) {
-      autoTable(doc, {
-        startY: doc.lastAutoTable.finalY + 10,
-        head: [["Credit Report", "Value"]],
-        body: [
-          ["Total Debt", formatCurrency(credit_report_data.debt.total_debt)],
-          ["Credit Check", credit_report_data.debt.credit_check ? "Yes" : "No"],
-          [
-            "Debt by Institution",
-            credit_report_data.debt.debt_by_institution
-              .map((d) => `${d.institution}: ₦${d.amount_owed}`)
-              .join(", "),
-          ],
-        ],
-      });
-    }
+  // Employment Details
+  if (employment_details) {
+    autoTable(doc, {
+      startY: doc.lastAutoTable.finalY + 10,
+      head: [["Employment Detail", "Value"]],
+      body: Object.entries(employment_details).map(([key, value]) => [
+        key,
+        value ? value.toString() : "—",
+      ]),
+    });
+  }
 
-    // Employment Details
-    if (employment_details) {
-      autoTable(doc, {
-        startY: doc.lastAutoTable.finalY + 10,
-        head: [["Employment Detail", "Value"]],
-        body: Object.entries(employment_details).map(([key, value]) => [
-          key,
-          value ? value.toString() : "—",
-        ]),
-      });
-    }
+  // ✅ Next of Kin Details
+  if (next_of_kin) {
+    autoTable(doc, {
+      startY: doc.lastAutoTable.finalY + 10,
+      head: [["Next of Kin", "Value"]],
+      body: [
+        ["Full Name", next_of_kin.full_name || "—"],
+        ["Relationship", next_of_kin.relationship || "—"],
+        ["Phone Number", next_of_kin.phone_number || "—"],
+        ["Email", next_of_kin.email || "—"],
+        ["Residential Address", next_of_kin.residential_address || "—"],
+        ["Employer Name", next_of_kin.employer_name || "—"],
+      ],
+    });
+  } else {
+    autoTable(doc, {
+      startY: doc.lastAutoTable.finalY + 10,
+      head: [["Next of Kin", "Value"]],
+      body: [["Next of Kin", "None"]],
+    });
+  }
 
-    doc.save(`applicant_${id}.pdf`);
-  };
+  doc.save(`applicant_${id}.pdf`);
+};
 
   return (
     <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex justify-center items-center z-50">

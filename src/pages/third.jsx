@@ -95,20 +95,59 @@ const PaySkulDashboard = () => {
         doc.save(`Applicant_${selectedApplicant.id}.pdf`);
     };
 
-
     const getStatusColor = (status) => {
-        const colors = {
-            pending_credit_check: "bg-yellow-100 text-yellow-800",
-            offer_made: "bg-green-100 text-green-800",
-            needs_review: "bg-orange-100 text-orange-800",
-            approved: "bg-blue-100 text-blue-800",
-            rejected: "bg-red-100 text-red-800",
-        };
-        return colors[status] || "bg-gray-100 text-gray-800";
-    };
+  const colors = {
+    pending_credit_check: "bg-yellow-100 text-yellow-800",
+    offer_made: "bg-green-100 text-green-800",
+    needs_review: "bg-orange-100 text-orange-800",
+    approved: "bg-blue-100 text-blue-800",
+    rejected: "bg-red-100 text-red-800",
+  };
+  return colors[status] || "bg-gray-100 text-gray-800";
+};
 
-    const formatStatus = (status) =>
-        status ? status.replace(/_/g, " ").toUpperCase() : "UNKNOWN";
+const formatStatus = (status) => {
+  switch (status) {
+    case "pending_credit_check":
+      return "Pending";
+    case "offer_made":
+      return "Offered";
+    case "needs_review":
+      return "Review";
+    case "approved":
+      return "Approved";
+    case "rejected":
+      return "Rejected";
+    default:
+      return "Unknown";
+  }
+};
+
+// const formatStatus = (status) => {
+//   const labels = {
+//     pending_credit_check: "Pending",
+//     offer_made: "Offered",
+//     needs_review: "Review",
+//     approved: "Approved",
+//     rejected: "Rejected",
+//   };
+//   return labels[status] || "Unknown";
+// };
+
+
+    // const getStatusColor = (status) => {
+    //     const colors = {
+    //         pending_credit_check: "bg-yellow-100 text-yellow-800",
+    //         offer_made: "bg-green-100 text-green-800",
+    //         needs_review: "bg-orange-100 text-orange-800",
+    //         approved: "bg-blue-100 text-blue-800",
+    //         rejected: "bg-red-100 text-red-800",
+    //     };
+    //     return colors[status] || "bg-gray-100 text-gray-800";
+    // };
+
+    // const formatStatus = (status) =>
+    //     status ? status.replace(/_/g, " ").toUpperCase() : "UNKNOWN";
 
     const formatCurrency = (amount) => {
         const value = parseFloat(amount);
@@ -262,6 +301,7 @@ const PaySkulDashboard = () => {
                                             </td>
                                             <td className="px-6 py-4">
                                                 <span
+                                                // className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(applicant.status)}`}
                                                     className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(applicant.status)}`}
                                                 >
                                                     {formatStatus(applicant.status)}
@@ -270,13 +310,13 @@ const PaySkulDashboard = () => {
                                             <td className="px-6 py-4 text-sm text-gray-900">
                                                 {applicant.employment_details?.employment_status || "N/A"}
                                             </td>
-                                            <td className="px-6 py-4 text-sm text-gray-500">
+                                            <td className="px-2 py-4 text-xs text-gray-500">
                                                 {formatDate(applicant.created_at)}
                                             </td>
                                             <td className="px-6 py-4 text-sm">
                                                 <button
                                                     onClick={() => handleViewDetails(applicant)}
-                                                    className="text-blue-600 hover:text-blue-900 font-medium"
+                                                    className="text-purple-600 hover:text-purple-900 font-medium"
                                                 >
                                                     View Details
                                                 </button>
