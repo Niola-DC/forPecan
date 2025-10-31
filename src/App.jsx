@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import PaySkulDashboard from "./pages/third";
 import Login from "./components/Login";
+import { BrowserRouter } from "react-router-dom";
 
 function App() {
   const [token, setToken] = useState(null);
@@ -14,6 +15,7 @@ function App() {
     } else {
       setLoading(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const validateToken = async (accessToken) => {
@@ -25,8 +27,8 @@ function App() {
         }
       );
 
-      // If unauthorized, clear invalid token
       if (response.status === 401) {
+        // Clear invalid token
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
         setToken(null);
@@ -60,10 +62,14 @@ function App() {
     );
   }
 
-  return token ? (
-    <PaySkulDashboard onLogout={handleLogout} />
-  ) : (
-    <Login onLogin={handleLogin} />
+  return (
+    <BrowserRouter>
+      {token ? (
+        <PaySkulDashboard onLogout={handleLogout} />
+      ) : (
+        <Login onLogin={handleLogin} />
+      )}
+    </BrowserRouter>
   );
 }
 
