@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Login = ({ onLogin }) => {
   const [username, setUsername] = useState("");
@@ -6,6 +7,7 @@ const Login = ({ onLogin }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const BASE_URL = "https://payskul-api.up.railway.app";
 
@@ -31,6 +33,7 @@ const Login = ({ onLogin }) => {
       localStorage.setItem("refreshToken", tokenData.refresh);
 
       onLogin(tokenData.access);
+      navigate("/")
     } catch (err) {
       setError(err.message);
     } finally {

@@ -313,7 +313,7 @@ const formatStatus = (status) => {
                                             <td className="px-2 py-4 text-xs text-gray-500">
                                                 {formatDate(applicant.created_at)}
                                             </td>
-                                            <td className="px-6 py-4 text-sm">
+                                            <td className="px-6 py-4 text-xs">
                                                 <button
                                                     onClick={() => handleViewDetails(applicant)}
                                                     className="text-purple-600 hover:text-purple-900 font-medium"
