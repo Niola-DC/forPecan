@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import {
-    X, Briefcase, DollarSign, FileText, AlertCircle, Loader2,
-} from 'lucide-react';
+import { AlertCircle, Loader2} from 'lucide-react';
 import Header from '../components/Header';
-import { motion, AnimatePresence } from "framer-motion";
 import jsPDF from "jspdf";
 import ApplicantDetailsModal from '../components/ApplicationDetModal';
 
