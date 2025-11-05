@@ -594,11 +594,351 @@
 
 
 
+// import React from 'react';
+// import { X, Download, AlertCircle, DollarSign, Calendar, User, Briefcase, UserCheck, FileText, TrendingDown } from 'lucide-react';
+
+// const ApplicantDetailsModal = ({ selectedApplicant, closeModal, onDownloadPDF }) => {
+//   if (!selectedApplicant) return null;
+
+//   const formatCurrency = (amount) => {
+//     const value = parseFloat(amount);
+//     return isNaN(value) ? "₦0" : `₦${value.toLocaleString()}`;
+//   };
+
+//   const formatCurrencyFromKobo = (amountInKobo) => {
+//     const value = parseFloat(amountInKobo);
+//     if (isNaN(value)) return "₦0";
+//     const amountInNaira = value / 100;
+//     return `₦${amountInNaira.toLocaleString()}`;
+//   };
+
+//   const formatDate = (dateString) => {
+//     if (!dateString) return "N/A";
+//     return new Date(dateString).toLocaleDateString("en-US", {
+//       year: "numeric",
+//       month: "long",
+//       day: "numeric",
+//     });
+//   };
+
+//   const getStatusColor = (status) => {
+//     const colors = {
+//       pending_credit_check: "bg-yellow-100 text-yellow-800 border-yellow-300",
+//       offer_made: "bg-green-100 text-green-800 border-green-300",
+//       needs_review: "bg-orange-100 text-orange-800 border-orange-300",
+//       approved: "bg-blue-100 text-blue-800 border-blue-300",
+//       rejected: "bg-red-100 text-red-800 border-red-300",
+//     };
+//     return colors[status] || "bg-gray-100 text-gray-800 border-gray-300";
+//   };
+
+//   const formatStatus = (status) => {
+//     const statusMap = {
+//       pending_credit_check: "Pending Credit Check",
+//       offer_made: "Offer Made",
+//       needs_review: "Needs Review",
+//       approved: "Approved",
+//       rejected: "Rejected",
+//     };
+//     return statusMap[status] || status;
+//   };
+
+//   const hasCredit = selectedApplicant.credit_bureau_report;
+//   const canAfford = hasCredit?.summary?.can_afford;
+
+//   return (
+//     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 overflow-y-auto">
+//       <div className="bg-white rounded-lg shadow-xl max-w-5xl w-full my-8 max-h-[90vh] overflow-y-auto">
+//         {/* Header */}
+//         <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center z-10">
+//           <div>
+//             <h2 className="text-2xl font-bold text-gray-900">Applicant Details</h2>
+//             <p className="text-sm text-gray-600">Application ID: #{selectedApplicant.id}</p>
+//           </div>
+//           <div className="flex items-center gap-3">
+//             {onDownloadPDF && (
+//               <button
+//                 onClick={onDownloadPDF}
+//                 className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition"
+//               >
+//                 <Download className="w-4 h-4" />
+//                 Download PDF
+//               </button>
+//             )}
+//             <button
+//               onClick={closeModal}
+//               className="p-2 hover:bg-gray-100 rounded-lg transition"
+//             >
+//               <X className="w-6 h-6 text-gray-600" />
+//             </button>
+//           </div>
+//         </div>
+
+//         <div className="p-6 space-y-6">
+//           {/* Application Status & Overview */}
+//           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+//             <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-lg border border-purple-200">
+//               <div className="flex items-center gap-2 mb-2">
+//                 <DollarSign className="w-5 h-5 text-purple-600" />
+//                 <h3 className="font-semibold text-gray-900">Loan Amount</h3>
+//               </div>
+//               <p className="text-3xl font-bold text-purple-900">{formatCurrency(selectedApplicant.amount_needed)}</p>
+//               <p className="text-sm text-gray-600 mt-1">Purpose: {selectedApplicant.purpose}</p>
+//             </div>
+            
+//             <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-lg border border-blue-200">
+//               <div className="flex items-center gap-2 mb-2">
+//                 <Calendar className="w-5 h-5 text-blue-600" />
+//                 <h3 className="font-semibold text-gray-900">Application Status</h3>
+//               </div>
+//               <span className={`inline-block px-3 py-1 rounded-full text-sm font-semibold border ${getStatusColor(selectedApplicant.status)}`}>
+//                 {formatStatus(selectedApplicant.status)}
+//               </span>
+//               <p className="text-sm text-gray-600 mt-2">Applied: {formatDate(selectedApplicant.created_at)}</p>
+//             </div>
+//           </div>
+
+//           {/* Credit Bureau Report */}
+//           {hasCredit && (
+//             <div className="bg-white border-2 border-gray-200 rounded-lg p-6">
+//               <div className="flex items-center gap-2 mb-4">
+//                 <TrendingDown className="w-5 h-5 text-red-600" />
+//                 <h3 className="text-lg font-bold text-gray-900">Credit Bureau Report</h3>
+//               </div>
+              
+//               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+//                 <div className="bg-red-50 p-4 rounded-lg border border-red-200">
+//                   <p className="text-sm text-gray-600 mb-1">Total Debt</p>
+//                   <p className="text-2xl font-bold text-red-900">{formatCurrencyFromKobo(hasCredit.debt?.total_debt)}</p>
+//                 </div>
+                
+//                 <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+//                   <p className="text-sm text-gray-600 mb-1">Monthly Payment</p>
+//                   <p className="text-2xl font-bold text-blue-900">{formatCurrencyFromKobo(hasCredit.summary?.monthly_payment)}</p>
+//                 </div>
+                
+//                 <div className={`p-4 rounded-lg border ${canAfford ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
+//                   <p className="text-sm text-gray-600 mb-1">Affordability</p>
+//                   <p className={`text-xl font-bold ${canAfford ? 'text-green-900' : 'text-red-900'}`}>
+//                     {canAfford ? 'Can Afford' : 'Cannot Afford'}
+//                   </p>
+//                 </div>
+//               </div>
+
+//               {hasCredit.debt?.debt_by_institution && hasCredit.debt.debt_by_institution.length > 0 && (
+//                 <div className="mt-4">
+//                   <p className="text-sm font-semibold text-gray-700 mb-2">Debt by Institution:</p>
+//                   <div className="space-y-2">
+//                     {hasCredit.debt.debt_by_institution.map((debt, index) => (
+//                       <div key={index} className="flex justify-between items-center bg-gray-50 p-3 rounded border border-gray-200">
+//                         <span className="text-sm font-medium text-gray-900">{debt.institution}</span>
+//                         <span className="text-sm font-bold text-red-600">{formatCurrencyFromKobo(debt.amount_owed)}</span>
+//                       </div>
+//                     ))}
+//                   </div>
+//                 </div>
+//               )}
+
+//               {hasCredit.months_assessed && (
+//                 <div className="mt-4 text-sm text-gray-600 bg-gray-50 p-3 rounded border border-gray-200">
+//                   <strong>Assessment Period:</strong> {formatDate(hasCredit.months_assessed.start)} to {formatDate(hasCredit.months_assessed.end)}
+//                 </div>
+//               )}
+//             </div>
+//           )}
+
+//           {!hasCredit && (
+//             <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 flex items-start gap-3">
+//               <AlertCircle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+//               <div>
+//                 <p className="font-semibold text-yellow-900">No Credit Bureau Report Available</p>
+//                 <p className="text-sm text-yellow-700 mt-1">Credit check has not been completed for this applicant.</p>
+//               </div>
+//             </div>
+//           )}
+
+//           {/* Loan Terms */}
+//           <div className="bg-white border-2 border-gray-200 rounded-lg p-6">
+//             <div className="flex items-center gap-2 mb-4">
+//               <FileText className="w-5 h-5 text-purple-600" />
+//               <h3 className="text-lg font-bold text-gray-900">Loan Terms & Conditions</h3>
+//             </div>
+            
+//             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+//               <div className="bg-gray-50 p-4 rounded border border-gray-200">
+//                 <p className="text-sm text-gray-600 mb-1">Loan Amount</p>
+//                 <p className="text-xl font-bold text-gray-900">{formatCurrency(selectedApplicant.loan_terms?.loan_amount)}</p>
+//               </div>
+              
+//               <div className="bg-gray-50 p-4 rounded border border-gray-200">
+//                 <p className="text-sm text-gray-600 mb-1">Tenor</p>
+//                 <p className="text-xl font-bold text-gray-900">{selectedApplicant.tenor_in_months} months</p>
+//               </div>
+              
+//               <div className="bg-gray-50 p-4 rounded border border-gray-200">
+//                 <p className="text-sm text-gray-600 mb-1">Interest Rate (Monthly)</p>
+//                 <p className="text-xl font-bold text-gray-900">
+//                   {selectedApplicant.interest_rate || selectedApplicant.loan_terms?.interest_rate_monthly 
+//                     ? `${selectedApplicant.interest_rate || selectedApplicant.loan_terms.interest_rate_monthly}%` 
+//                     : 'Not Set'}
+//                 </p>
+//               </div>
+              
+//               <div className="bg-gray-50 p-4 rounded border border-gray-200">
+//                 <p className="text-sm text-gray-600 mb-1">Estimated Monthly Payment</p>
+//                 <p className="text-xl font-bold text-gray-900">
+//                   {selectedApplicant.loan_terms?.estimated_monthly_payment 
+//                     ? formatCurrency(selectedApplicant.loan_terms.estimated_monthly_payment)
+//                     : 'Not Calculated'}
+//                 </p>
+//               </div>
+              
+//               <div className="bg-purple-50 p-4 rounded border border-purple-200">
+//                 <p className="text-sm text-gray-600 mb-1">Total Amount Payable</p>
+//                 <p className="text-xl font-bold text-purple-900">
+//                   {selectedApplicant.loan_terms?.total_amount_payable 
+//                     ? formatCurrency(selectedApplicant.loan_terms.total_amount_payable)
+//                     : 'Not Calculated'}
+//                 </p>
+//               </div>
+              
+//               <div className="bg-purple-50 p-4 rounded border border-purple-200">
+//                 <p className="text-sm text-gray-600 mb-1">Total Interest</p>
+//                 <p className="text-xl font-bold text-purple-900">
+//                   {selectedApplicant.loan_terms?.total_interest 
+//                     ? formatCurrency(selectedApplicant.loan_terms.total_interest)
+//                     : 'Not Calculated'}
+//                 </p>
+//               </div>
+//             </div>
+
+//             <div className="mt-4 bg-blue-50 p-4 rounded border border-blue-200">
+//               <p className="text-sm font-semibold text-gray-700 mb-1">Repayment Method:</p>
+//               <p className="text-base font-bold text-blue-900">
+//                 {selectedApplicant.loan_terms?.repayment_method || 'Monthly Principal plus Interest'}
+//               </p>
+//               <p className="text-xs text-gray-600 mt-1">
+//                 Code: {selectedApplicant.repayment_method || selectedApplicant.loan_terms?.repayment_method_code || 'monthly_principal_interest'}
+//               </p>
+//             </div>
+//           </div>
+
+//           {/* Personal Information */}
+//           <div className="bg-white border-2 border-gray-200 rounded-lg p-6">
+//             <div className="flex items-center gap-2 mb-4">
+//               <User className="w-5 h-5 text-blue-600" />
+//               <h3 className="text-lg font-bold text-gray-900">Personal Information</h3>
+//             </div>
+            
+//             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3">
+//               <InfoRow label="Full Name" value={`${selectedApplicant.personal_info?.title} ${selectedApplicant.personal_info?.first_name} ${selectedApplicant.personal_info?.last_name}`} />
+//               <InfoRow label="Gender" value={selectedApplicant.personal_info?.gender} />
+//               <InfoRow label="Date of Birth" value={formatDate(selectedApplicant.personal_info?.date_of_birth)} />
+//               <InfoRow label="Marital Status" value={selectedApplicant.personal_info?.marital_status} />
+//               <InfoRow label="Education Level" value={selectedApplicant.personal_info?.education_level} />
+//               <InfoRow label="State of Origin" value={selectedApplicant.personal_info?.state_of_origin} />
+//               <InfoRow label="BVN" value={selectedApplicant.personal_info?.bvn} />
+//               <InfoRow label="ID Type" value={selectedApplicant.personal_info?.means_of_identification?.replace('_', ' ')} />
+//               <InfoRow label="ID Number" value={selectedApplicant.personal_info?.identification_number} />
+//             </div>
+//           </div>
+
+//           {/* Contact Details */}
+//           <div className="bg-white border-2 border-gray-200 rounded-lg p-6">
+//             <div className="flex items-center gap-2 mb-4">
+//               <User className="w-5 h-5 text-green-600" />
+//               <h3 className="text-lg font-bold text-gray-900">Contact Details</h3>
+//             </div>
+            
+//             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3">
+//               <InfoRow label="Mobile Number" value={selectedApplicant.contact_details?.mobile_no} />
+//               <InfoRow label="Email" value={selectedApplicant.contact_details?.personal_email} />
+//               <InfoRow label="Home Address" value={selectedApplicant.contact_details?.home_address} />
+//               <InfoRow label="State" value={selectedApplicant.contact_details?.state} />
+//               <InfoRow label="Building Type" value={selectedApplicant.contact_details?.building} />
+//               <InfoRow label="Accommodation" value={selectedApplicant.contact_details?.accommodation_type} />
+//               <InfoRow label="Length of Stay" value={`${selectedApplicant.contact_details?.length_of_stay} years`} />
+//               <InfoRow label="Closest Bus Stop" value={selectedApplicant.contact_details?.closest_bus_stop} />
+//               <InfoRow label="Landmark" value={selectedApplicant.contact_details?.landmark} />
+//               <InfoRow label="Spouse Phone" value={selectedApplicant.contact_details?.spouse_phone_no} />
+//             </div>
+//           </div>
+
+//           {/* Employment Details */}
+//           <div className="bg-white border-2 border-gray-200 rounded-lg p-6">
+//             <div className="flex items-center gap-2 mb-4">
+//               <Briefcase className="w-5 h-5 text-orange-600" />
+//               <h3 className="text-lg font-bold text-gray-900">Employment Details</h3>
+//             </div>
+            
+//             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3">
+//               <InfoRow label="Employer Name" value={selectedApplicant.employment_details?.employer_name} />
+//               <InfoRow label="Employment Status" value={selectedApplicant.employment_details?.employment_status} />
+//               <InfoRow label="Employment Type" value={selectedApplicant.employment_details?.employment_type} />
+//               <InfoRow label="Department" value={selectedApplicant.employment_details?.department} />
+//               <InfoRow label="Designation" value={selectedApplicant.employment_details?.designation} />
+//               <InfoRow label="Staff ID" value={selectedApplicant.employment_details?.staff_id} />
+//               <InfoRow label="Office Email" value={selectedApplicant.employment_details?.office_email} />
+//               <InfoRow label="Office Address" value={selectedApplicant.employment_details?.office_address} />
+//               <InfoRow label="Office State" value={selectedApplicant.employment_details?.office_state} />
+//               <InfoRow label="Office LGA" value={selectedApplicant.employment_details?.office_lga} />
+//               <InfoRow label="Time in Employment" value={`${selectedApplicant.employment_details?.time_in_current_employment} years`} />
+//               <InfoRow 
+//                 label="Monthly Net Salary" 
+//                 value={selectedApplicant.employment_details?.monthly_net_salary 
+//                   ? formatCurrency(selectedApplicant.employment_details.monthly_net_salary)
+//                   : 'Not Provided'
+//                 }
+//                 highlight={true}
+//               />
+//             </div>
+//           </div>
+
+//           {/* Next of Kin */}
+//           <div className="bg-white border-2 border-gray-200 rounded-lg p-6">
+//             <div className="flex items-center gap-2 mb-4">
+//               <UserCheck className="w-5 h-5 text-indigo-600" />
+//               <h3 className="text-lg font-bold text-gray-900">Next of Kin</h3>
+//             </div>
+            
+//             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3">
+//               <InfoRow label="Full Name" value={selectedApplicant.next_of_kin?.full_name} />
+//               <InfoRow label="Relationship" value={selectedApplicant.next_of_kin?.relationship} />
+//               <InfoRow label="Phone Number" value={selectedApplicant.next_of_kin?.phone_number} />
+//               <InfoRow label="Email" value={selectedApplicant.next_of_kin?.email} />
+//               <InfoRow label="Address" value={selectedApplicant.next_of_kin?.residential_address} />
+//               <InfoRow label="Employer" value={selectedApplicant.next_of_kin?.employer_name} />
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// const InfoRow = ({ label, value, highlight }) => (
+//   <div className={`${highlight ? 'bg-yellow-50 p-2 rounded border border-yellow-200' : ''}`}>
+//     <p className="text-sm text-gray-600">{label}</p>
+//     <p className={`text-base font-medium ${highlight ? 'text-yellow-900' : 'text-gray-900'}`}>
+//       {value || 'N/A'}
+//     </p>
+//   </div>
+// );
+
+// export default ApplicantDetailsModal;
+
+
 import React from 'react';
 import { X, Download, AlertCircle, DollarSign, Calendar, User, Briefcase, UserCheck, FileText, TrendingDown } from 'lucide-react';
 
 const ApplicantDetailsModal = ({ selectedApplicant, closeModal, onDownloadPDF }) => {
   if (!selectedApplicant) return null;
+
+  const handleDownload = () => {
+    if (onDownloadPDF) {
+      onDownloadPDF(selectedApplicant);
+    }
+  };
 
   const formatCurrency = (amount) => {
     const value = parseFloat(amount);
@@ -658,7 +998,7 @@ const ApplicantDetailsModal = ({ selectedApplicant, closeModal, onDownloadPDF })
           <div className="flex items-center gap-3">
             {onDownloadPDF && (
               <button
-                onClick={onDownloadPDF}
+                onClick={handleDownload}
                 className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition"
               >
                 <Download className="w-4 h-4" />
