@@ -96,58 +96,32 @@ const PaySkulDashboard = () => {
     };
 
     const getStatusColor = (status) => {
-  const colors = {
-    pending_credit_check: "bg-yellow-100 text-yellow-800",
-    offer_made: "bg-green-100 text-green-800",
-    needs_review: "bg-orange-100 text-orange-800",
-    approved: "bg-blue-100 text-blue-800",
-    rejected: "bg-red-100 text-red-800",
-  };
-  return colors[status] || "bg-gray-100 text-gray-800";
-};
+        const colors = {
+            pending_credit_check: "bg-yellow-100 text-yellow-800",
+            offer_made: "bg-green-100 text-green-800",
+            needs_review: "bg-orange-100 text-orange-800",
+            approved: "bg-blue-100 text-blue-800",
+            rejected: "bg-red-100 text-red-800",
+        };
+        return colors[status] || "bg-gray-100 text-gray-800";
+    };
 
-const formatStatus = (status) => {
-  switch (status) {
-    case "pending_credit_check":
-      return "Pending";
-    case "offer_made":
-      return "Offered";
-    case "needs_review":
-      return "Review";
-    case "approved":
-      return "Approved";
-    case "rejected":
-      return "Rejected";
-    default:
-      return "Unknown";
-  }
-};
-
-// const formatStatus = (status) => {
-//   const labels = {
-//     pending_credit_check: "Pending",
-//     offer_made: "Offered",
-//     needs_review: "Review",
-//     approved: "Approved",
-//     rejected: "Rejected",
-//   };
-//   return labels[status] || "Unknown";
-// };
-
-
-    // const getStatusColor = (status) => {
-    //     const colors = {
-    //         pending_credit_check: "bg-yellow-100 text-yellow-800",
-    //         offer_made: "bg-green-100 text-green-800",
-    //         needs_review: "bg-orange-100 text-orange-800",
-    //         approved: "bg-blue-100 text-blue-800",
-    //         rejected: "bg-red-100 text-red-800",
-    //     };
-    //     return colors[status] || "bg-gray-100 text-gray-800";
-    // };
-
-    // const formatStatus = (status) =>
-    //     status ? status.replace(/_/g, " ").toUpperCase() : "UNKNOWN";
+    const formatStatus = (status) => {
+        switch (status) {
+            case "pending_credit_check":
+                return "Pending";
+            case "offer_made":
+                return "Offered";
+            case "needs_review":
+                return "Review";
+            case "approved":
+                return "Approved";
+            case "rejected":
+                return "Rejected";
+            default:
+                return "Unknown";
+        }
+    };
 
     const formatCurrency = (amount) => {
         const value = parseFloat(amount);
@@ -301,7 +275,7 @@ const formatStatus = (status) => {
                                             </td>
                                             <td className="px-6 py-4">
                                                 <span
-                                                // className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(applicant.status)}`}
+                                                    // className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(applicant.status)}`}
                                                     className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(applicant.status)}`}
                                                 >
                                                     {formatStatus(applicant.status)}
@@ -354,35 +328,16 @@ const formatStatus = (status) => {
                 </div>
             </div>
 
-            {/* <AnimatePresence> */}
-                {showModal && selectedApplicant && (
+            {showModal && selectedApplicant && (
 
-                    // <motion.div
-                    //     key="modal"
-                    //     initial={{ opacity: 0 }}
-                    //     animate={{ opacity: 1 }}
-                    //     exit={{ opacity: 0 }}
-                    //     className="fixed inset-0 bg-gray-900/30 backdrop-blur-sm flex justify-center items-center z-50"
 
-                    //   className="fixed inset-0 bg-opacity-20 flex justify-center items-center z-50"
-                    // >
-                    //     <motion.div
-                    //         initial={{ y: 40, opacity: 0, scale: 0.95 }}
-                    //         animate={{ y: 0, opacity: 1, scale: 1 }}
-                    //         exit={{ y: 40, opacity: 0, scale: 0.95 }}
-                    //         transition={{ duration: 0.3, ease: "easeInOut" }}
-                    //         className="bg-white rounded-xl shadow-lg w-full max-w-2xl p-6 relative overflow-y-auto max-h-[90vh]"
-                    //     >
-                                                 <ApplicantDetailsModal
-    selectedApplicant={selectedApplicant}
-    closeModal={closeModal}
-  />
-                         
-                )}
-                           
-                        {/* </motion.div>
-                     </motion.div> */}
-            {/* </AnimatePresence> */}
+                <ApplicantDetailsModal
+                    selectedApplicant={selectedApplicant}
+                    closeModal={closeModal}
+                />
+
+            )}
+
 
 
         </div>
